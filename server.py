@@ -21,7 +21,7 @@ while 1:
     # Receive whatever the newly conneted client has sent
     data = connectionSocket.recv(40)
 
-    print(str(data))
+    print(data.decode('utf-8'))
 
     # Close the socket after receipt
     connectionSocket.close()
