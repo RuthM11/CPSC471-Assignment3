@@ -89,4 +89,4 @@ ENV/
 .ropeproject
 
 # Jetbrains/Idea files
-.idea*
+.idea/*
