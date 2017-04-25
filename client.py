@@ -1,20 +1,17 @@
 from socket import *
 
+from connectioninfo import *
+
 # name and port number of the server we are connecting to
-serverName = "localhost"
-serverPort = 12000
-clientPort = 12001
+# connectioninfo.py contains the information to easily edit it in the future
+serverName = SERVER_NAME
+serverPort = PORT_NUMBER
 
 # create a socket, connect
 clientSocket = socket(AF_INET, SOCK_STREAM)
 clientSocket.connect((serverName, serverPort))
 
 # string to send
-#data = "Hello world! This is a very long string."
-
-
-# send the string
-#clientSocket.send(bytes(data, 'utf-8'))
 data2 = ""
 
 

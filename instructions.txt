@@ -2,3 +2,10 @@ There are two separate processes, one for the server, and one for the client.
 1. Run server.py, it should output that it is ready to receive data.
 2. Open a separate window and run client.py, it will send data to the specified server.
 3. Check results on the server.py terminal
+
+
+Files:
+- connectioninfo.py                 contains connection information to easily edit values across files
+- server.py                         main server process
+- client.py                         main client process
+- instructions.txt                  contains pertinent information about the project

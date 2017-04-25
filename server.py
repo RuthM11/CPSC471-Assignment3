@@ -1,6 +1,9 @@
 from socket import *
 
-serverPort = 12000
+from connectioninfo import *
+
+# connectioninfo.py contains connection information for easier editing
+serverPort = PORT_NUMBER
 
 # TCP Socket and bind
 serverSocket = socket(AF_INET, SOCK_STREAM)
