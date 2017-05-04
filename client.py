@@ -10,11 +10,29 @@ inputData = ""
 PARTITION_SIZE = 40
 
 
-# connects to a socket using server an port as arguments
+def convert_data_str(data, size):
+    # converts 'data' into a string of length 'size' and returns a new string
+    formattedData = str(data)
+    while len(formattedData) <= size:
+        formattedData = formattedData + '\0'
+
+    return formattedData
+
+
+
 def client_connect_tcp(server, port):
+    # connects to a socket using 'server' and 'port'
+    # receives amount of bytes to send at a time
+
     try:
+        global PARTITION_SIZE
         connSocket = socket(AF_INET, SOCK_STREAM)
         connSocket.connect((server, port))
+
+        # set the size of data delivery
+        bytesToSend = connSocket.recv(10)
+        #print("Server: %d byte sections" % int(bytesToSend.decode('utf-8')))
+        PARTITION_SIZE = int(bytesToSend.decode('utf-8').strip('\x00'))
 
     except ConnectionRefusedError as e:
         # happens when client cannot connect to server
@@ -23,11 +41,24 @@ def client_connect_tcp(server, port):
     finally:
         return connSocket
 
+
 def send_data(data, dataSock):
+    # interactions:
+        # sends a 10-byte string to tell size of data
+        # sends data
+        # accepts a receipt
+
+
+    # tell server how much is being sent
+    dataLength = str(len(data))
+    message = convert_data_str(dataLength, 10)
+    dataSock.send(bytes(message, 'utf-8'))
+
+
+
     bytesSent = 0
     sectionNumber = 1
-
-
+    # start sending data
     while bytesSent <= len(data):
         try:
             sectionBytes = 0
@@ -75,9 +106,11 @@ while str(inputData).lower() != "exit":
     send_data(inputData, dataSocket)
     print("Message sent")
 
+    # get a receipt
+    receipt = dataSocket.recv(10)
+    print("Server: %s" % receipt.decode('utf-8'))
+
     # close the socket when the message is done being sent
-    # print("Closing connection")
     dataSocket.close()
-    # print("Connection closed.\n")
 
 
