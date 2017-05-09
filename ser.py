@@ -67,6 +67,7 @@ while 1:
                 bytesSent = 0
                 dirSize = convert_data_str(len(response),10)
                 connectionSocket.send(bytes(dirSize,'utf-8'))
+  #see line 56
                 while bytesSent < len(response): 
                     bytesSent += connectionSocket.send(bytes(response[bytesSent:], 'utf-8'))
             elif cmd[0] == 'put':
@@ -79,12 +80,14 @@ while 1:
                     user_file = open(cmd[1],"wb+")
                     #receive file
                     fileBytesSent = 0
-                    #receieve until we get a number - random nums in buffer?
+ #what is this
+#receieve until we get a number - random nums in buffer?
                     fileSize = connectionSocket.recv(10)
                     fileSize = connectionSocket.recv(10)
                     fileSize = connectionSocket.recv(10)
                     while not fileSize.decode('utf-8').strip('\x00').isdigit():
                         print("No size obtained")
+    #see line 56
                         fileSize = connectionSocket.recv(10)
                     fSize = int(fileSize.decode('utf-8').strip('\x00'))
                     print("Size of file: ",fSize)
@@ -95,7 +98,8 @@ while 1:
                             break
                         fileData = tmp2Buff.decode('utf-8').strip('\x00')
                         print("Writing: ",fileData)
-                        user_file.write(fileData.encode('ascii'))
+  #ascii? Make sure it's decoded as ascii, also see line 56
+                        user_file.write(fileData.encode('ascii')) 
                         fileBytesSent += len(fileData)
                         print (fileBytesSent)
                     #tell connection that file was received
@@ -104,7 +108,8 @@ while 1:
                     connectionSocket.send(bytes(ack, 'utf-8'))
                 else:
                     print("File already exists!")
-                    #Tell not to send                    
+                    #Tell not to send
+ #if you only send 3 bytes, you accept 3 bytes on the other end
                     skipSend = convert_data_str("NO",3)
                     connectionSocket.send(bytes(skipSend,'utf-8'))
             elif cmd[0] == 'get':
